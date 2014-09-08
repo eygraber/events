@@ -1,4 +1,4 @@
-package com.cpsolutions.events;
+package com.staticbloc.events;
 
 /**
  * The base class for all events.

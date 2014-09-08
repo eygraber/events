@@ -1,9 +1,9 @@
-package com.cpsolutions.events;
+package com.staticbloc.events;
 
 public enum RunType {
     /**
      * The event handler will be called on the same thread that {@code post} was called on.
-     * @see com.cpsolutions.events.Events#post(Event)
+     * @see Events#post(Event)
      */
     DEFAULT,
     /**

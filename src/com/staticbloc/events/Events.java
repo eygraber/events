@@ -1,4 +1,4 @@
-package com.cpsolutions.events;
+package com.staticbloc.events;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -40,7 +40,7 @@ public final class Events {
 
     /**
      * Subscribe the {@code subscriber} for events of type {@code event} using {@code methodName} as the
-     * event handler. Will use {@link com.cpsolutions.events.RunType#DEFAULT}.
+     * event handler. Will use {@link RunType#DEFAULT}.
      * @param subscriber an {@code Object} to subscribe for notifications
      * @param event the type of {@code Event} the {@code subscriber} will subscribe to
      * @param methodName the name of the method that will be the event handler
@@ -65,7 +65,7 @@ public final class Events {
     /**
      * Subscribe the {@code subscriber} for events using event handlers described in {@code methodRegistrations}.
      * @param subscriber an {@code Object} to subscribe for notifications
-     * @param methodRegistrations an array of {@link com.cpsolutions.events.MethodRegistration} that holds the
+     * @param methodRegistrations an array of {@link MethodRegistration} that holds the
      *                            event and event handler information
      */
     public void subscribe(Object subscriber, MethodRegistration<?>... methodRegistrations) {
@@ -133,7 +133,7 @@ public final class Events {
     }
 
     /**
-     * Posts an {@link com.cpsolutions.events.Event} to its subscribers
+     * Posts an {@link Event} to its subscribers
      * @param event the {@code Event} to post
      */
     public <T extends Event> void post(T event) {

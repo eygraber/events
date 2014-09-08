@@ -1,9 +1,9 @@
-package com.cpsolutions.events;
+package com.staticbloc.events;
 
 /**
  * Holds the information to route an event to a method.
- * @param <T> The type of {@link com.cpsolutions.events.Event} that this {@code MethodRegistration} represents.
- * @see com.cpsolutions.events.Events#subscribe(Object, MethodRegistration[])
+ * @param <T> The type of {@link Event} that this {@code MethodRegistration} represents.
+ * @see Events#subscribe(Object, MethodRegistration[])
  */
 public final class MethodRegistration<T extends Event> {
     private Class<T> event;
@@ -12,9 +12,9 @@ public final class MethodRegistration<T extends Event> {
 
     /**
      * Creates a MethodRegistration meant to be passed to
-     * {@link com.cpsolutions.events.Events#subscribe(Object, MethodRegistration[])}.
-     * Will use {@link com.cpsolutions.events.RunType#DEFAULT}.
-     * @param event a class type of an {@link com.cpsolutions.events.Event} used to match
+     * {@link Events#subscribe(Object, MethodRegistration[])}.
+     * Will use {@link RunType#DEFAULT}.
+     * @param event a class type of an {@link Event} used to match
      *              that {@code Event} to the {@code methodName}.
      * @param methodName a method name that will be called when an {@code Event}
      *                   matching {@code event} is posted.
@@ -25,8 +25,8 @@ public final class MethodRegistration<T extends Event> {
 
     /**
      * Creates a MethodRegistration meant to be passed to
-     * {@link com.cpsolutions.events.Events#subscribe(Object, MethodRegistration[])}
-     * @param event a class type of an {@link com.cpsolutions.events.Event} used to match
+     * {@link Events#subscribe(Object, MethodRegistration[])}
+     * @param event a class type of an {@link Event} used to match
      *              that {@code Event} to the {@code methodName}.
      * @param methodName a method name that will be called when an {@code Event}
      *                   matching {@code event} is posted.
@@ -57,7 +57,7 @@ public final class MethodRegistration<T extends Event> {
 
     /**
      *
-     * @return the {@link com.cpsolutions.events.RunType}
+     * @return the {@link RunType}
      */
     public RunType getRunType() {
         return runType;
