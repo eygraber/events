@@ -42,7 +42,6 @@ public class Event {
     }
 
     /**
-     *
      * @return the extra for this event.
      */
     public Object getExtra() {
@@ -50,7 +49,7 @@ public class Event {
     }
 
     public int hashCode() {
-        int hash = 0;
+        int hash = super.hashCode();
         if(id != null) {
             hash = id.hashCode();
             if(extra != null) {
@@ -61,15 +60,25 @@ public class Event {
     }
 
     /**
-     * Returns true if both {@code Event}'s ids and extras are equal.
-     * @param other the {@code Event} that is being compared.
-     * @return if the events are equal.
+     * Returns true if {@code o} is an {@code Event}, and both
+     * {@code Event}'s ids and extras are equal.
+     * @param o the {@link Object} that is being compared
+     * @return if the events are equal
      */
-    public boolean equals(Event other) {
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        else if(!(o instanceof Event)) {
+            return false;
+        }
+
+        Event other = (Event) o;
         if(getId() != null) {
             if(getId().equals(other.getId())) {
                 if(getExtra() != null) {
-                    return equals(other.getExtra());
+                    return getExtra().equals(other.getExtra());
                 }
                 else {
                     return other.getExtra() == null;
@@ -82,7 +91,7 @@ public class Event {
         else {
             if(other.getId() == null) {
                 if(getExtra() != null) {
-                    return equals(other.getExtra());
+                    return getExtra().equals(other.getExtra());
                 }
                 else {
                     return other.getExtra() == null;
