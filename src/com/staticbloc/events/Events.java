@@ -25,13 +25,12 @@ public final class Events {
      * Create a new {@code Events} instance.
      */
     public Events() {
-        map = new HashMap<Class<? extends Event>, Set<MethodRegistrationWrapper>>();
-        reverseLookup = new HashMap<Object, Set<Class<? extends Event>>>();
+        map = new HashMap<>();
+        reverseLookup = new HashMap<>();
         mainPoster = new Handler(Looper.getMainLooper());
     }
 
     /**
-     *
      * @return the default instance
      */
     public static Events getDefault() {
@@ -46,7 +45,7 @@ public final class Events {
      * @param methodName the name of the method that will be the event handler
      */
     public <T extends Event> void subscribe(Object subscriber, Class<T> event, String methodName) {
-        subscribe(subscriber, new MethodRegistration<T>(event, methodName));
+        subscribe(subscriber, new MethodRegistration<>(event, methodName));
     }
 
     /**
@@ -56,10 +55,10 @@ public final class Events {
      * @param event the type of {@code Event} the {@code subscriber} will subscribe to
      * @param methodName the name of the method that will be the event handler
      * @param runType defines what {@code Thread} the event handler will be called on when an {@code Event}
-     *                is posted.
+     *                is posted
      */
     public <T extends Event> void subscribe(Object subscriber, Class<T> event, String methodName, RunType runType) {
-        subscribe(subscriber, new MethodRegistration<T>(event, methodName, runType));
+        subscribe(subscriber, new MethodRegistration<>(event, methodName, runType));
     }
 
     /**
@@ -85,7 +84,7 @@ public final class Events {
             synchronized (mapLock) {
                 Set<MethodRegistrationWrapper> registrations = map.get(event);
                 if(registrations == null) {
-                    registrations = new HashSet<MethodRegistrationWrapper>();
+                    registrations = new HashSet<>();
                 }
                 registrations.add(new MethodRegistrationWrapper(subscriberClass, methodRegistration, methodToInvoke));
                 map.put(event, registrations);
@@ -94,7 +93,7 @@ public final class Events {
             synchronized (reverseLookupLock) {
                 Set<Class<? extends Event>> reverseLookups = reverseLookup.get(subscriber);
                 if(reverseLookups == null) {
-                    reverseLookups = new HashSet<Class<? extends Event>>();
+                    reverseLookups = new HashSet<>();
                 }
                 reverseLookups.add(event);
                 reverseLookup.put(subscriber, reverseLookups);
@@ -138,9 +137,9 @@ public final class Events {
      */
     public <T extends Event> void post(T event) {
         List<MethodRegistrationWrapper> registrations;
-        Set<MethodRegistrationWrapper> registrationsSet = map.get((event.getClass()));;
+        Set<MethodRegistrationWrapper> registrationsSet = map.get((event.getClass()));
         if(registrationsSet != null) {
-            registrations = new ArrayList<MethodRegistrationWrapper>(registrationsSet);
+            registrations = new ArrayList<>(registrationsSet);
         }
         else {
             return;
@@ -151,7 +150,7 @@ public final class Events {
                 invoke(event, registration);
             }
             else if(registration.getRunType() == RunType.MAIN) {
-                mainPoster.post(new InvokeRunnable<T>(event, registration));
+                mainPoster.post(new InvokeRunnable<>(event, registration));
             }
         }
     }
@@ -222,7 +221,15 @@ public final class Events {
             return methodRegistration.hashCode();
         }
 
-        public boolean equals(MethodRegistrationWrapper other) {
+        @Override
+        public boolean equals(Object o) {
+            if(this == o) {
+                return true;
+            }
+            else if(!(o instanceof MethodRegistrationWrapper)) {
+                return false;
+            }
+            MethodRegistrationWrapper other = (MethodRegistrationWrapper) o;
             return methodRegistration.equals(other.methodRegistration);
         }
     }
