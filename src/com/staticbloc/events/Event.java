@@ -3,9 +3,9 @@ package com.staticbloc.events;
 /**
  * The base class for all events.
  */
-public class Event {
+public class Event<T> {
     private String id;
-    private Object extra;
+    private T extra;
 
     /**
      * Creates an {@code Event} without an {@code id} or {@code extra}.
@@ -29,7 +29,7 @@ public class Event {
      * @param id the id of this event.
      * @param extra the extra for this event.
      */
-    public Event(String id, Object extra) {
+    public Event(String id, T extra) {
         this.id = id;
         this.extra = extra;
     }
@@ -44,7 +44,7 @@ public class Event {
     /**
      * @return the extra for this event.
      */
-    public Object getExtra() {
+    public T getExtra() {
         return extra;
     }
 

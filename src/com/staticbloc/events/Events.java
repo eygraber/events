@@ -86,7 +86,7 @@ public final class Events {
                 if(registrations == null) {
                     registrations = new HashSet<>();
                 }
-                registrations.add(new MethodRegistrationWrapper(subscriberClass, methodRegistration, methodToInvoke));
+                registrations.add(new MethodRegistrationWrapper(subscriber, methodRegistration, methodToInvoke));
                 map.put(event, registrations);
             }
 
