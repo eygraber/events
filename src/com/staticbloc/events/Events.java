@@ -15,11 +15,12 @@ public final class Events {
         public static final Events instance = new Events();
     }
 
+    private static final Handler mainPoster = new Handler(Looper.getMainLooper());
+
     private final Map<Class<? extends Event>, Set<MethodRegistrationWrapper>> map;
     private final Object mapLock = new Object();
     private final Map<Object, Set<Class<? extends Event>>> reverseLookup;
     private final Object reverseLookupLock = new Object();
-    private final Handler mainPoster;
 
     /**
      * Create a new {@code Events} instance.
@@ -27,7 +28,6 @@ public final class Events {
     public Events() {
         map = new HashMap<>();
         reverseLookup = new HashMap<>();
-        mainPoster = new Handler(Looper.getMainLooper());
     }
 
     /**
