@@ -3,9 +3,13 @@ package com.staticbloc.events;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.lang.Override;
+import java.lang.Runnable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public final class Events {
     /**
@@ -16,18 +20,40 @@ public final class Events {
     }
 
     private static final Handler mainPoster = new Handler(Looper.getMainLooper());
+    private static final ExecutorService defaultEventDispatcher = Executors.newSingleThreadExecutor();
 
     private final Map<Class<? extends Event>, Set<MethodRegistrationWrapper>> map;
     private final Object mapLock = new Object();
     private final Map<Object, Set<Class<? extends Event>>> reverseLookup;
     private final Object reverseLookupLock = new Object();
 
+    private final ExecutorService eventDispatcher;
+
     /**
-     * Create a new {@code Events} instance.
+     * Create a new {@code Events} instance that uses the default {@link java.util.concurrent.ExecutorService}.
      */
     public Events() {
+        this(defaultEventDispatcher);
+    }
+
+    /**
+     * Create a new {@code Events} instance. If {@code useDefaultExecutor} is {@code true} then the
+     * default {@link java.util.concurrent.ExecutorService} will be used. Otherwise,
+     * {@link java.util.concurrent.Executors#newSingleThreadExecutor()} will be used.
+     * @param useDefaultExecutor whether or not to use the default {@code ExecutorService}
+     */
+    public Events(boolean useDefaultExecutor) {
+        this((useDefaultExecutor ? defaultEventDispatcher : Executors.newSingleThreadExecutor()));
+    }
+
+    /**
+     * Create a new {@code Events} instance.
+     * @param eventDispatcher the {@link java.util.concurrent.ExecutorService} to use
+     */
+    public Events(ExecutorService eventDispatcher) {
         map = new HashMap<>();
         reverseLookup = new HashMap<>();
+        this.eventDispatcher = eventDispatcher;
     }
 
     /**
@@ -131,28 +157,41 @@ public final class Events {
         }
     }
 
+    private class EventDispatchRunnable<T extends Event> implements Runnable {
+        private T event;
+
+        public EventDispatchRunnable(T event) {
+            this.event = event;
+        }
+
+        @Override
+        public void run() {
+            List<MethodRegistrationWrapper> registrations;
+            Set<MethodRegistrationWrapper> registrationsSet = map.get((event.getClass()));
+            if(registrationsSet != null) {
+                registrations = new ArrayList<>(registrationsSet);
+            }
+            else {
+                return;
+            }
+
+            for(MethodRegistrationWrapper registration : registrations) {
+                if(registration.getRunType() == RunType.DEFAULT) {
+                    invoke(event, registration);
+                }
+                else if(registration.getRunType() == RunType.MAIN) {
+                    mainPoster.post(new InvokeRunnable<>(event, registration));
+                }
+            }
+        }
+    }
+
     /**
      * Posts an {@link Event} to its subscribers
      * @param event the {@code Event} to post
      */
     public <T extends Event> void post(T event) {
-        List<MethodRegistrationWrapper> registrations;
-        Set<MethodRegistrationWrapper> registrationsSet = map.get((event.getClass()));
-        if(registrationsSet != null) {
-            registrations = new ArrayList<>(registrationsSet);
-        }
-        else {
-            return;
-        }
-
-        for(MethodRegistrationWrapper registration : registrations) {
-            if(registration.getRunType() == RunType.DEFAULT) {
-                invoke(event, registration);
-            }
-            else if(registration.getRunType() == RunType.MAIN) {
-                mainPoster.post(new InvokeRunnable<>(event, registration));
-            }
-        }
+        eventDispatcher.execute(new EventDispatchRunnable<>(event));
     }
 
     private static <T extends Event> void invoke(T event, MethodRegistrationWrapper registration) {
