@@ -1,0 +1,6 @@
+-classpath 'E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\classes\\main;E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\resources\\main'
+-d 'E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\docs\\javadoc'
+-doctitle 'annotations API'
+-quiet 
+-windowtitle 'annotations API'
+'E:\\Programing\\Android\\StaticBloc\\events\\annotations\\src\\main\\java\\com\\staticbloc\\events\\EventHandlerProcessor.java'
