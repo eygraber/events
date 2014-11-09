@@ -3,6 +3,10 @@
 .idea
 .DS_Store
 /build
+/annotations/build
+/app/build
+/library/build
+
 
 # ndk generated files
 **/obj/
