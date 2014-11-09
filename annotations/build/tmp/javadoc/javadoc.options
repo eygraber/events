@@ -1,4 +1,4 @@
--classpath 'E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\classes\\main;E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\resources\\main'
+-classpath 'E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\classes\\main;E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\resources\\main;E:\\.gradle\\caches\\modules-2\\files-2.1\\com.staticbloc\\events-lib\\0.1.2\\42bd6eba4f51275671a35de9d9318231d397ffc0\\events-lib-0.1.2.jar'
 -d 'E:\\Programing\\Android\\StaticBloc\\events\\annotations\\build\\docs\\javadoc'
 -doctitle 'annotations API'
 -quiet 

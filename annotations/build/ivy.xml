@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-  <info organisation="events" module="annotations" revision="unspecified" status="integration" publication="20141107125938">
+  <info organisation="events" module="annotations" revision="unspecified" status="integration" publication="20141109145306">
     <description/>
   </info>
   <configurations>
@@ -13,11 +13,14 @@
     <conf name="testRuntime" visibility="private" description="Runtime classpath for source set 'test'." extends="runtime,testCompile"/>
   </configurations>
   <publications>
-    <artifact name="Events-Annotations" type="jar" ext="jar" conf="archives,archives,runtime"/>
-    <artifact name="Events-Annotations" type="jar.asc" ext="asc" conf="archives,archives,signatures,signatures"/>
+    <artifact name="Events" type="jar" ext="jar" conf="archives,archives,runtime"/>
+    <artifact name="Events" type="jar.asc" ext="asc" conf="archives,archives,signatures,signatures"/>
     <artifact name="annotations" type="jar" ext="jar" conf="archives" m:classifier="sources"/>
     <artifact name="annotations" type="jar.asc" ext="asc" conf="archives,signatures" m:classifier="sources"/>
     <artifact name="annotations" type="jar" ext="jar" conf="archives" m:classifier="javadoc"/>
     <artifact name="annotations" type="jar.asc" ext="asc" conf="archives,signatures" m:classifier="javadoc"/>
   </publications>
+  <dependencies>
+    <dependency org="com.staticbloc" name="events-lib" rev="0.1.2" conf="compile-&gt;default"/>
+  </dependencies>
 </ivy-module>

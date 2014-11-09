@@ -3,9 +3,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.staticbloc</groupId>
-  <artifactId>events-annotations</artifactId>
-  <version>1.0.1</version>
-  <name>Events-Annotations</name>
+  <artifactId>events</artifactId>
+  <version>1.0.3</version>
+  <name>Events</name>
   <description>An event library for Android.</description>
   <url>https://github.com/eygraber/events</url>
   <licenses>
@@ -26,4 +26,12 @@
     <developerConnection>scm:git@github.com:eygraber/events.git</developerConnection>
     <url>https://github.com/eygraber/events</url>
   </scm>
+  <dependencies>
+    <dependency>
+      <groupId>com.staticbloc</groupId>
+      <artifactId>events-lib</artifactId>
+      <version>0.1.2</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 </project>
