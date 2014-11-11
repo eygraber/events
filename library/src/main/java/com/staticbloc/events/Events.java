@@ -257,7 +257,7 @@ public final class Events {
         }
 
         public int hashCode() {
-            return methodRegistration.hashCode();
+            return subscriber.hashCode() + methodRegistration.hashCode();
         }
 
         @Override
@@ -269,7 +269,7 @@ public final class Events {
                 return false;
             }
             MethodRegistrationWrapper other = (MethodRegistrationWrapper) o;
-            return methodRegistration.equals(other.methodRegistration);
+            return subscriber.equals(other.subscriber) && methodRegistration.equals(other.methodRegistration);
         }
     }
 }
