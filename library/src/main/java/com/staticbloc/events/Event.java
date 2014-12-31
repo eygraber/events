@@ -48,58 +48,23 @@ public class Event<T> {
         return extra;
     }
 
-    public int hashCode() {
-        int hash = super.hashCode();
-        if(id != null) {
-            hash = id.hashCode();
-            if(extra != null) {
-                hash += extra.hashCode();
-            }
-        }
-        return hash;
-    }
-
-    /**
-     * Returns true if {@code o} is an {@code Event}, and both
-     * {@code Event}'s ids and extras are equal.
-     * @param o the {@link Object} that is being compared
-     * @return if the events are equal
-     */
     @Override
     public boolean equals(Object o) {
-        if(this == o) {
-            return true;
-        }
-        else if(!(o instanceof Event)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Event other = (Event) o;
-        if(getId() != null) {
-            if(getId().equals(other.getId())) {
-                if(getExtra() != null) {
-                    return getExtra().equals(other.getExtra());
-                }
-                else {
-                    return other.getExtra() == null;
-                }
-            }
-            else {
-                return false;
-            }
-        }
-        else {
-            if(other.getId() == null) {
-                if(getExtra() != null) {
-                    return getExtra().equals(other.getExtra());
-                }
-                else {
-                    return other.getExtra() == null;
-                }
-            }
-            else {
-                return false;
-            }
-        }
+        Event event = (Event) o;
+
+        if (extra != null ? !extra.equals(event.extra) : event.extra != null) return false;
+        if (id != null ? !id.equals(event.id) : event.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (extra != null ? extra.hashCode() : 0);
+        return result;
     }
 }
