@@ -197,16 +197,11 @@ public final class Events {
     private static <T extends Event> void invoke(T event, MethodRegistrationWrapper registration) {
         try {
             registration.getMethodToInvoke().invoke(registration.getSubscriber(), event);
-        } catch (IllegalAccessException e) {
-            throw new IllegalAccessError(String.format("IllegalAccessError - " +
+        } catch (IllegalAccessException|InvocationTargetException e) {
+            throw new RuntimeException(String.format("IllegalAccessError - " +
                             "Couldn't invoke %s on instance of %s for %s",
                     registration.getMethodName(), registration.getSubscriberClass().getSimpleName(),
-                    event.getClass().getSimpleName()));
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(String.format("InvocationTargetException - " +
-                            "Couldn't invoke %s on instance of %s for %s",
-                    registration.getMethodName(), registration.getSubscriberClass().getSimpleName(),
-                    event.getClass().getSimpleName()));
+                    event.getClass().getSimpleName()), e);
         }
     }
 
