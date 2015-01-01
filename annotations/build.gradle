@@ -10,7 +10,6 @@ sourceSets {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':library')
 }
 
 // only applies if gradle was run with uploadArchives
