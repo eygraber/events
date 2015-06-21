@@ -68,8 +68,8 @@ public final class MethodRegistration<T extends Event> {
     }
 
     /**
-     * Returns true if {@code o} is an {@code MethodRegistrtion}, and both
-     * {@code MethodRegistrtion}'s {@link MethodRegistration#getEvent()},
+     * Returns true if {@code o} is an {@code MethodRegistration}, and both
+     * {@code MethodRegistration}'s {@link MethodRegistration#getEvent()},
      * {@link MethodRegistration#getMethodName()}, and {@link MethodRegistration#getRunType()} are equal.
      * @param o the {@link Object} that is being compared
      * @return if the {@code MethodRegistration}s are equal

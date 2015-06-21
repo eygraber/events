@@ -3,15 +3,18 @@ package com.staticbloc.events;
 import android.os.Handler;
 import android.os.Looper;
 
-import java.lang.Override;
-import java.lang.Runnable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public final class Events {
+public class Events {
     /**
      * The default instance
      */
@@ -197,7 +200,7 @@ public final class Events {
     private static <T extends Event> void invoke(T event, MethodRegistrationWrapper registration) {
         try {
             registration.getMethodToInvoke().invoke(registration.getSubscriber(), event);
-        } catch (IllegalAccessException|InvocationTargetException e) {
+        } catch (Exception e) {
             throw new RuntimeException(String.format("IllegalAccessError - " +
                             "Couldn't invoke %s on instance of %s for %s",
                     registration.getMethodName(), registration.getSubscriberClass().getSimpleName(),
