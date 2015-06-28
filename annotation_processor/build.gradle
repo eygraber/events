@@ -23,4 +23,4 @@ dependencies {
 }
 
 // only applies if gradle was run with uploadArchives
-apply from: 'https://raw.githubusercontent.com/eygraber/gradle-mvn-push/java/gradle-mvn-push.gradle'
+apply from: 'https://raw.githubusercontent.com/eygraber/gradle-mvn-push/master/gradle-mvn-push.gradle'
