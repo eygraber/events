@@ -3,6 +3,7 @@
 .idea
 .DS_Store
 /build
+/annotation_processor/build
 /annotations/build
 /app/build
 /library/build
