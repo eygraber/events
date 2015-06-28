@@ -7,7 +7,6 @@ public enum RunType {
      * <br/>
      * <b>Note:</b> This will block the posting thread. {@link EventHandler}s that perform long running
      * operations should use {@link RunType#BACKGROUND}
-     * @see Events#post(Event)
      */
     DEFAULT,
     /**
@@ -16,12 +15,10 @@ public enum RunType {
      * <br/>
      * <b>Note:</b> This will block the posting thread. {@link EventHandler}s that perform long running
      * operations should use {@link RunType#BACKGROUND}
-     * @see Events#post(Event)
      */
     MAIN,
     /**
      * The event handlers will be called on a background thread.
-     * @see Events#post(Event)
      */
     BACKGROUND
 }
