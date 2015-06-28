@@ -1,2 +1,2 @@
-events
+com.staticbloc.events
 ======
