@@ -6,8 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
+
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 public @interface EventHandler {
   RunType runType() default RunType.BACKGROUND;
