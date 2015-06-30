@@ -5,7 +5,6 @@ import com.squareup.javapoet.JavaFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,12 +70,6 @@ public class EventHandlerProcessor extends AbstractProcessor {
         eventHandlerRegistrations.add(eventHandlerRegistration);
         originatingElements.add(element);
       }
-    }
-
-    for(Map.Entry<String, Set<EventHandlerRegistration>> entry : map.entrySet()) {
-      Set<EventHandlerRegistration> sortedSet = new HashSet<>();
-      sortedSet.addAll(entry.getValue());
-      entry.setValue(sortedSet);
     }
 
     EventDispatcherFactoryCreator creator = new EventDispatcherFactoryCreator(map, processingEnv.getElementUtils());
