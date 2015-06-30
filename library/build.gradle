@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.staticbloc:events-annotations-base:1.5.0'
+    compile 'com.staticbloc:events-annotations-base:1.5.2'
 }
 
 task clearJar(type: Delete) {
