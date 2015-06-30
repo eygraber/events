@@ -23,8 +23,6 @@ public class EventHandlerProcessor extends AbstractProcessor {
   private EventComparator eventComparator;
   private Map<String, Set<EventHandlerRegistration>> map;
 
-  boolean generateEventDispatcherFactoryImplementation;
-
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
@@ -32,8 +30,6 @@ public class EventHandlerProcessor extends AbstractProcessor {
     eventHandlerRegistrationParser = new EventHandlerRegistrationParser(processingEnv);
     eventComparator = new EventComparator(processingEnv.getTypeUtils());
     map  = new HashMap<>();
-
-    generateEventDispatcherFactoryImplementation = false;
   }
 
   @Override public SourceVersion getSupportedSourceVersion() {
@@ -42,6 +38,8 @@ public class EventHandlerProcessor extends AbstractProcessor {
 
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    boolean generateEventDispatcherFactoryImplementation = false;
+
     for(TypeElement t : annotations) {
       for(Element element : roundEnv.getElementsAnnotatedWith(t)) {
         EventHandlerRegistration eventHandlerRegistration;
