@@ -28,7 +28,15 @@ public class EventHandlerRegistrationParser {
     }
   }
 
-  public EventHandlerRegistration parse(ProcessingEnvironment processingEnv, Element methodElement) throws EventHandlerParseException {
+  private final Types typeUtils;
+  private final Elements elementUtils;
+
+  public EventHandlerRegistrationParser(ProcessingEnvironment processingEnv) {
+    typeUtils = processingEnv.getTypeUtils();
+    elementUtils = processingEnv.getElementUtils();
+  }
+
+  public EventHandlerRegistration parse(Element methodElement) throws EventHandlerParseException {
     EventHandler handler = methodElement.getAnnotation(EventHandler.class);
     if(handler == null) {
       return null;
@@ -38,9 +46,9 @@ public class EventHandlerRegistrationParser {
 
     ExecutableElement eventHandlerMethod = checkMethodForParameterizedType(methodElement);
 
-    VariableElement eventParameterElement = checkMethodParameter(eventHandlerMethod, processingEnv);
+    VariableElement eventParameterElement = checkMethodParameter(eventHandlerMethod);
 
-    return createEventHandlerMethodInfo(handler, eventHandlerMethod, eventParameterElement, processingEnv);
+    return createEventHandlerMethodInfo(handler, eventHandlerMethod, eventParameterElement);
   }
 
   private void checkMethodModifiers(Element methodElement) throws EventHandlerParseException {
@@ -71,13 +79,10 @@ public class EventHandlerRegistrationParser {
     return eventHandlerMethod;
   }
 
-  private VariableElement checkMethodParameter(ExecutableElement eventHandlerMethod, ProcessingEnvironment processingEnv) throws EventHandlerParseException {
+  private VariableElement checkMethodParameter(ExecutableElement eventHandlerMethod) throws EventHandlerParseException {
     List<? extends VariableElement> parameters = eventHandlerMethod.getParameters();
     if(parameters != null && parameters.size() == 1) {
       VariableElement eventParameterElement = parameters.get(0);
-
-      Types typeUtils = processingEnv.getTypeUtils();
-      Elements elementUtils = processingEnv.getElementUtils();
 
       if(!typeUtils.isAssignable(eventParameterElement.asType(), elementUtils.getTypeElement("com.staticbloc.events.Event").asType())) {
         throw new EventHandlerParseException("@EventHandler must take a single parameter that implements Event");
@@ -92,8 +97,7 @@ public class EventHandlerRegistrationParser {
   }
 
   private EventHandlerRegistration createEventHandlerMethodInfo(EventHandler handler, ExecutableElement eventHandlerMethod,
-                                                              VariableElement eventParameterElement, ProcessingEnvironment processingEnv) throws EventHandlerParseException {
-    Types typeUtils = processingEnv.getTypeUtils();
+                                                              VariableElement eventParameterElement) throws EventHandlerParseException {
 
     TypeElement enclosingClass = (TypeElement) eventHandlerMethod.getEnclosingElement();
     if(!enclosingClass.getModifiers().contains(Modifier.PUBLIC)) {

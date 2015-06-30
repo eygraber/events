@@ -3,9 +3,7 @@ package com.staticbloc.events;
 import com.squareup.javapoet.JavaFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -21,23 +19,17 @@ import javax.tools.Diagnostic;
 
 @SupportedAnnotationTypes("com.staticbloc.events.EventHandler")
 public class EventHandlerProcessor extends AbstractProcessor {
-  private final EventHandlerRegistrationParser eventHandlerRegistrationParser;
-  private final Map<String, Set<EventHandlerRegistration>> map;
-  private final List<Element> originatingElements;
-
+  private EventHandlerRegistrationParser eventHandlerRegistrationParser;
   private EventComparator eventComparator;
-
-  public EventHandlerProcessor() {
-    eventHandlerRegistrationParser = new EventHandlerRegistrationParser();
-    map  = new HashMap<>();
-    originatingElements = new ArrayList<>();
-  }
+  private Map<String, Set<EventHandlerRegistration>> map;
 
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
 
+    eventHandlerRegistrationParser = new EventHandlerRegistrationParser(processingEnv);
     eventComparator = new EventComparator(processingEnv.getTypeUtils());
+    map  = new HashMap<>();
   }
 
   @Override public SourceVersion getSupportedSourceVersion() {
@@ -46,11 +38,13 @@ public class EventHandlerProcessor extends AbstractProcessor {
 
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    boolean generateEventDispatcherFactoryImplementation = false;
+
     for(TypeElement t : annotations) {
       for(Element element : roundEnv.getElementsAnnotatedWith(t)) {
         EventHandlerRegistration eventHandlerRegistration;
         try {
-          eventHandlerRegistration = eventHandlerRegistrationParser.parse(processingEnv, element);
+          eventHandlerRegistration = eventHandlerRegistrationParser.parse(element);
         } catch (EventHandlerRegistrationParser.EventHandlerParseException e) {
           printError(element, e.getMessage());
           continue;
@@ -68,16 +62,20 @@ public class EventHandlerProcessor extends AbstractProcessor {
         }
 
         eventHandlerRegistrations.add(eventHandlerRegistration);
-        originatingElements.add(element);
+        if(!generateEventDispatcherFactoryImplementation) {
+          generateEventDispatcherFactoryImplementation = true;
+        }
       }
     }
 
-    EventDispatcherFactoryCreator creator = new EventDispatcherFactoryCreator(map, processingEnv.getElementUtils());
-    JavaFile file = creator.createDispatcherFactory();
-    try {
-      file.writeTo(processingEnv.getFiler());
-    } catch (IOException e) {
-      e.printStackTrace();
+    if(generateEventDispatcherFactoryImplementation) {
+      EventDispatcherFactoryCreator creator = new EventDispatcherFactoryCreator(map, processingEnv.getElementUtils());
+      JavaFile file = creator.createDispatcherFactory();
+      try {
+        file.writeTo(processingEnv.getFiler());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 
     return true;
